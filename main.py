@@ -53,8 +53,12 @@ def add_expense():
 # View expenses
 def view_expenses():
     df = load_data()
-    text.delete(1.0, END)
-    text.insert(INSERT, df.to_string(index=False))
+    if not df.empty:
+        text.delete(1.0, END)
+        text.insert(INSERT, df.to_string(index=False))
+    else:
+        text.delete(1.0, END)
+        text.insert(INSERT, "No expenses recorded.")
 
 # Add custom category
 def add_custom_category():
@@ -89,56 +93,59 @@ categories = load_categories()
 # Create GUI
 root = Tk()
 root.title("Expense Tracker")
-root.geometry("400x450")
-root.resizable(False, False)
+root.geometry("500x600")
+root.resizable(True, True)
 font_style = ("Arial", 12)
 
 # Input fields
 frame1 = Frame(root)
-frame1.pack(padx=10, pady=10)
+frame1.pack(padx=10, pady=10, fill=BOTH, expand=True)
 
-date_label = Label(frame1, text="Date (dd-mm-yyyy):", font=font_style)
+date_label = Label(frame1, text="Date (dd-mm-yyyy):", font=("Arial", 12, "bold"))
 date_label.grid(row=0, column=0, padx=5, pady=5, sticky=E)
 date_entry = Entry(frame1, font=font_style)
 date_entry.grid(row=0, column=1, padx=5, pady=5)
 
-category_label = Label(frame1, text="Category:", font=font_style)
+category_label = Label(frame1, text="Category:", font=("Arial", 12, "bold"))
 category_label.grid(row=1, column=0, padx=5, pady=5, sticky=E)
 category_var = StringVar(value=categories[0])
 category_menu = ttk.Combobox(frame1, textvariable=category_var, values=categories, font=font_style)
 category_menu.grid(row=1, column=1, padx=5, pady=5)
 
-custom_category_label = Label(frame1, text="Add Custom Category:", font=font_style)
+custom_category_label = Label(frame1, text="Add Custom Category:", font=("Arial", 12, "bold"))
 custom_category_label.grid(row=2, column=0, padx=5, pady=5, sticky=E)
 custom_category_entry = Entry(frame1, font=font_style)
 custom_category_entry.grid(row=2, column=1, padx=5, pady=5)
 
-add_category_button = Button(frame1, text="Add Custom Category", command=add_custom_category, font=font_style)
+add_category_button = Button(frame1, text="Add Custom Category", command=add_custom_category, font=("Arial", 12, "bold"))
 add_category_button.grid(row=3, columnspan=2, pady=5)
 
-amount_label = Label(frame1, text="Amount:", font=font_style)
+amount_label = Label(frame1, text="Amount:", font=("Arial", 12, "bold"))
 amount_label.grid(row=4, column=0, padx=5, pady=5, sticky=E)
 amount_entry = Entry(frame1, font=font_style)
 amount_entry.grid(row=4, column=1, padx=5, pady=5)
 
-add_button = Button(frame1, text="Add Expense", command=add_expense, font=font_style)
+add_button = Button(frame1, text="Add Expense", command=add_expense, font=("Arial", 12, "bold"))
 add_button.grid(row=5, columnspan=2, pady=10)
 
 # Calculator
 calc_frame = Frame(root)
-calc_frame.pack(pady=10)
+calc_frame.pack(pady=10, fill=X)
 
-calc_label = Label(calc_frame, text="Calculator:", font=font_style)
-calc_label.grid(row=0, column=0, columnspan=2)
+calc_label = Label(calc_frame, text="Calculator:", font=("Arial", 12, "bold"))
+calc_label.pack(pady=5)
 
-calc_entry = Entry(calc_frame, font=font_style, width=20)
-calc_entry.grid(row=1, column=0, columnspan=2, pady=5)
+calc_entry = Entry(calc_frame, font=font_style, width=30)
+calc_entry.pack(pady=5)
 
-calc_button = Button(calc_frame, text="Calculate", command=lambda: calculate(calc_entry.get()), font=font_style)
-calc_button.grid(row=2, column=0, columnspan=2, pady=5)
+calc_button = Button(calc_frame, text="Calculate", command=lambda: calculate(calc_entry.get()), font=("Arial", 12, "bold"))
+calc_button.pack(pady=5)
 
 # View expenses
-view_button = Button(root, text="View Expenses", command=view_expenses, font=font_style)
+text = Text(root, height=6, width=60)  # Reduced height
+text.pack(padx=10, pady=10, fill=BOTH, expand=True)
+
+view_button = Button(root, text="Show Expenses", command=view_expenses, font=("Arial", 12, "bold"))
 view_button.pack(pady=10)
 
 root.mainloop()
