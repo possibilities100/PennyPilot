@@ -13,7 +13,7 @@
 - tkinter
 
 ## How to Run
-1. Clone the repository: git clone "https://github.com/possibilities100/Penny_Pilot"
+1. Clone the repository: git clone https://github.com/possibilities100/Penny_Pilot
   
 2. Navigate to the project directory: cd expense-tracker
 
